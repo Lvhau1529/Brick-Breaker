@@ -123,13 +123,11 @@ function ballPaddleCollision() {
     paddle.y < paddle.y + paddle.height &&
     ball.y > paddle.y
   ) {
-    // CHECK WHERE THE BALL HIT THE PADDLE
+    // Check ball hit paddle
     let collidePoint = ball.x - (paddle.x + paddle.width / 2);
 
-    // NORMALIZE THE VALUES
     collidePoint = collidePoint / (paddle.width / 2);
 
-    // CALCULATE THE ANGLE OF THE BALL
     let angle = (collidePoint * Math.PI) / 3;
 
     ball.dx = ball.speed * Math.sin(angle);
@@ -158,7 +156,8 @@ function createBricks() {
     for (let c = 0; c < brick.column; c++) {
       bricks[r][c] = {
         x: c * (brick.offSetLeft + brick.width) + brick.offSetLeft,
-        y: r * (brick.offSetTop + brick.height) +
+        y:
+          r * (brick.offSetTop + brick.height) +
           brick.offSetTop +
           brick.marginTop,
         status: true,
@@ -174,7 +173,7 @@ function drawBricks() {
   for (let r = 0; r < brick.row; r++) {
     for (let c = 0; c < brick.column; c++) {
       let b = bricks[r][c];
-      // if the brick isn't broken
+
       if (b.status) {
         ctx.fillStyle = brick.fillColor;
         ctx.fillRect(b.x, b.y, brick.width, brick.height);
@@ -191,7 +190,7 @@ function ballBrickCollision() {
   for (let r = 0; r < brick.row; r++) {
     for (let c = 0; c < brick.column; c++) {
       let b = bricks[r][c];
-      // if the brick isn't broken
+
       if (b.status) {
         if (
           ball.x + ball.radius > b.x &&
@@ -200,7 +199,7 @@ function ballBrickCollision() {
           ball.y - ball.radius < b.y + brick.height
         ) {
           ball.dy = -ball.dy;
-          b.status = false; // the brick is broken
+          b.status = false;
           SCORE += SCORE_UNIT;
         }
       }
@@ -227,12 +226,19 @@ function draw() {
 
   drawBricks();
 
-  // Show score
+  // score
   showGameStats(SCORE, 35, 25, SCORE_IMG, 5, 5);
-  // Show lives
+  // lives
   showGameStats(LIFE, canvas.width - 25, 25, LIFE_IMG, canvas.width - 55, 5);
-  // Show level
-  showGameStats(LEVEL, canvas.width / 2, 25, LEVEL_IMG, canvas.width / 2 - 30, 5);
+  // level
+  showGameStats(
+    LEVEL,
+    canvas.width / 2,
+    25,
+    LEVEL_IMG,
+    canvas.width / 2 - 30,
+    5
+  );
 }
 
 // Game over
@@ -247,7 +253,7 @@ function gameOver() {
 function levelUp() {
   let isLevelDone = true;
 
-  // check if all the bricks are broken
+  // check brick
   for (let r = 0; r < brick.row; r++) {
     for (let c = 0; c < brick.column; c++) {
       isLevelDone = isLevelDone && !bricks[r][c].status;
@@ -287,7 +293,6 @@ function update() {
   levelUp();
 }
 
-
 function loop() {
   ctx.drawImage(BG_IMG, 0, 0);
 
@@ -301,7 +306,6 @@ function loop() {
 }
 loop();
 
-/* Select elements */
 const gameover = document.getElementById("gameover");
 const youwin = document.getElementById("youwin");
 const youlose = document.getElementById("youlose");
